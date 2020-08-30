@@ -1,3 +1,4 @@
-[submodule "data"]
+[submodule "data-private"]
 	path = data/private
 	url = https://github.com/ronaldvdv/wwdm.data.git
+	

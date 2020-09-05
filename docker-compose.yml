@@ -3,21 +3,21 @@ services:
   frontend:
     build: ./src/frontend
     ports:
-      - '80:80'
+      - '5002:80'
     depends_on:
       - graphql
     expose:
-      - 80
+      - 5002
   graphql:
     build:
       context: ./src/WWDM
       dockerfile: WWDM.GraphQL.Server/Dockerfile
     ports:
-      - '5000:5000'
+      - '5001:80'
     depends_on:
       - db
     expose:
-      - 5000
+      - 5001
   db:
     build: 
       context: ./data/

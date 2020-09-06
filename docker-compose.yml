@@ -1,13 +1,13 @@
 version: '3'
 services:
-  frontend:
-    build: ./src/frontend
-    ports:
-      - '5002:80'
-    depends_on:
-      - graphql
-    expose:
-      - 5002
+#  frontend:
+#    build: ./src/frontend
+#    ports:
+#      - '5002:80'
+#    depends_on:
+#      - graphql
+#    expose:
+#      - 5002
   graphql:
     build:
       context: ./src/WWDM

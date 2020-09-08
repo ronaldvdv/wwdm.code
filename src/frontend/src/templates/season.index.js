@@ -12,6 +12,15 @@ export const query = graphql`
     wwdm {
         season(id: $id) {
             index, recordingCountries
+            image {
+              localImage {
+                childImageSharp {
+                  fluid(maxWidth: 400, maxHeight: 250) {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
+            }
         }        
     }
   }

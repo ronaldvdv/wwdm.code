@@ -6,6 +6,8 @@
 
 module.exports = {
   plugins: [
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     {
       resolve: "gatsby-source-graphql",
       options: {
@@ -13,6 +15,14 @@ module.exports = {
         fieldName: "wwdm",
         url: "http://localhost:61177/graphql/",
       },
-    }
+    },
+    {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: 'WwdmGraph_Image',
+        imagePath: 'filename',
+        prepareUrl: url => '../../data/private/shots/' + url
+      },
+    },
   ],
 }

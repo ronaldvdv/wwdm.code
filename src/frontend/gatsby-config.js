@@ -6,6 +6,13 @@
 
 module.exports = {
   plugins: [
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/static`,
+      },
+    },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     {
@@ -13,16 +20,16 @@ module.exports = {
       options: {
         typeName: "WwdmGraph",
         fieldName: "wwdm",
-        url: "http://localhost:61177/graphql/",
+        url: "http://localhost:5001/graphql/",
       },
     },
-    {
+    /*{
       resolve: `gatsby-plugin-remote-images`,
       options: {
         nodeType: 'WwdmGraph_Image',
-        imagePath: 'filename',
-        prepareUrl: url => '../../data/private/shots/' + url
+        imagePath: 'id',
+        prepareUrl: url => 'http://localhost:5002/images/' + url
       },
-    },
+    },*/
   ],
 }

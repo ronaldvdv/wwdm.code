@@ -51,7 +51,7 @@ namespace WWDM.Images
             IConfigurationSection sec = Configuration.GetSection(ImageOptions.Section);
             services.Configure<ImageOptions>(sec);
 
-            var cs = "Server=localhost;Database=wwdm2020;Uid=root;Pwd=root;";
+            var cs = "Server=db;Database=wwdm2020;Uid=root;Pwd=root;";
             services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs));
         }
     }

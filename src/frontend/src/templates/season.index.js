@@ -1,10 +1,9 @@
 import React from "react"
-
-
+import Img from "gatsby-image"
 
 export default function blogpost({ data }) {
     data = data.wwdm.season;
-    return <h1>This is a header for season <span>{data.index}</span>: {data.recordingCountries}</h1>
+    return <h1>This is a header for season <span>{data.index}</span>: {data.recordingCountries} <Img fluid={data.image.imageFile.childImageSharp.fluid}/> <pre>{JSON.stringify(data)}</pre></h1>
 }
 
 export const query = graphql`
@@ -13,15 +12,17 @@ export const query = graphql`
         season(id: $id) {
             index, recordingCountries
             image {
-              localImage {
+              id
+              imageFile {
+                absolutePath
                 childImageSharp {
-                  fluid(maxWidth: 400, maxHeight: 250) {
-                    ...GatsbyImageSharpFluid
+                    fluid(maxWidth: 700) {
+                      ...GatsbyImageSharpFluid
+                    }
                   }
-                }
               }
             }
         }        
     }
   }
-  `;
+`;

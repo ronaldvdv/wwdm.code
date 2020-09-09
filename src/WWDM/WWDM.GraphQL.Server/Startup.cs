@@ -40,7 +40,7 @@ namespace WWDM.GraphQL
             );
             services.AddGraphQLSubscriptions();
             services.AddDataLoaderRegistry();
-            var cs = "Server=localhost;Database=wwdm2020;Uid=root;Pwd=root;";
+            var cs = "Server=db;Database=wwdm2020;Uid=root;Pwd=root;";
             services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs));
         }
     }

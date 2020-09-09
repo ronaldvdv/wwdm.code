@@ -39,3 +39,39 @@ exports.createPages = async ({ graphql, actions }) => {
 exports.onCreateNode = ({ node }) => {
     console.log(`Node created of type "${node.internal.type}"`)
 }
+
+/* --------- gatsby-node.js --------- */
+
+const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
+
+exports.createResolvers = async (
+  {
+    actions,
+    cache,
+    createNodeId,
+    createResolvers,
+    store,
+    reporter,
+  },
+) => {
+  const { createNode } = actions
+
+  await createResolvers({
+    WwdmGraph_Image: {
+      imageFile: {
+        type: "File",
+        async resolve(source) {
+          let sourceUrl = 'http://localhost:5002/images/' + source.id;
+          return await createRemoteFileNode({
+            url: encodeURI(sourceUrl),
+            store,
+            cache,
+            createNode,
+            createNodeId,
+            reporter,
+          })
+        },
+      },
+    },
+  })
+}

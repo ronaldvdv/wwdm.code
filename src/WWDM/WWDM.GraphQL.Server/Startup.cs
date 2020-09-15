@@ -36,6 +36,7 @@ namespace WWDM.GraphQL
                 .AddQueryType<QueryType>()
                 .AddType<EpisodeType>()
                 .AddType<SeasonType>()
+                .AddType<ImageType>()
                 .Create()
             );
             services.AddGraphQLSubscriptions();

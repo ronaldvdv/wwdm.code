@@ -32,7 +32,7 @@ namespace WWDM
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options
             .UseLoggerFactory(loggerFactory)
-            //.UseLazyLoadingProxies()
+            .UseLazyLoadingProxies()
             ;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

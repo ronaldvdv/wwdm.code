@@ -1,3 +1,4 @@
+const path = require(`path`);
 /**
  * Configure your Gatsby site with this file.
  *
@@ -23,13 +24,18 @@ module.exports = {
         url: "http://localhost:5001/graphql/",
       },
     },
-    /*{
-      resolve: `gatsby-plugin-remote-images`,
+    {
+      resolve: `gatsby-plugin-sass`,
       options: {
-        nodeType: 'WwdmGraph_Image',
-        imagePath: 'id',
-        prepareUrl: url => 'http://localhost:5002/images/' + url
+        includePaths: ["src/scss"],
       },
-    },*/
+    },
+    {
+      resolve: 'gatsby-plugin-graphql-image',
+      options: {
+        schemaName: "WwdmGraph",
+        imageFieldName: "imagePath"
+      }
+    },
   ],
 }

@@ -1,9 +1,24 @@
 import React from "react"
 import Img from "gatsby-image"
+import Layout from "../components/Layout";
+import { Link } from "gatsby";
 
-export default function blogpost({ data }) {
+function EpisodeList({ seasonIndex, episodes })
+{
+  return <ul>
+    {episodes.map(e => <li><Link to={`/seizoen-${seasonIndex}/aflevering-${e.index}`}>Aflevering {e.index}</Link></li>)}
+  </ul>;
+}
+
+export default function view({ data }) {
     data = data.wwdm.season;
-    return <h1>This is a header for season <span>{data.index}</span>: {data.recordingCountries} <Img fluid={data.image.imageFile.childImageSharp.fluid}/> <pre>{JSON.stringify(data)}</pre></h1>
+    return<Layout 
+    menu={<h1>This is a header for season <span>{data.index}</span>: {data.recordingCountries}</h1>}
+    body={<div><Img fluid={data.image.imageFile.childImageSharp.fluid}/>Image: #{data.image.id} @ {data.image.absolutePath} <EpisodeList seasonIndex={data.index} episodes={data.episodes}/></div>
+    //body={<div>{JSON.stringify(data.image)}</div>
+
+  }
+    />;
 }
 
 export const query = graphql`
@@ -11,16 +26,22 @@ export const query = graphql`
     wwdm {
         season(id: $id) {
             index, recordingCountries
+            episodes {
+              index
+            }
             image {
-              id
+              id, absolutePath, extension
+
               imageFile {
-                absolutePath
+                id
                 childImageSharp {
-                    fluid(maxWidth: 700) {
-                      ...GatsbyImageSharpFluid
-                    }
+                  id
+                  fluid(maxWidth: 1200) {
+                    ...GatsbyImageSharpFluid
                   }
+                }
               }
+
             }
         }        
     }

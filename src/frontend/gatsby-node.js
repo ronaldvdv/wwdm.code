@@ -15,8 +15,6 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     `)
 
-    console.log(JSON.stringify(result.data));
-
     let seasons = result.data.wwdm.seasons;
     seasons.forEach(s => {
         createPage({
@@ -36,19 +34,36 @@ exports.createPages = async ({ graphql, actions }) => {
 
 }
 
-exports.onCreateNode = ({ node }) => {
-    console.log(`Node created of type "${node.internal.type}"`)
+exports.onCreateNode = ({  node, actions, getNode }) => {
+  var type = node.internal.type;
+  if(type == "SitePage" || type == "File")
+  {
+    return;
+  }
+  console.log(`Node created of type "${node.internal.type}": ${node}`)
 }
 
 /* --------- gatsby-node.js --------- */
 
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
+/*exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type ImageFile implements Node {
+      extension: String!
+      absolutePath: String!
+      id: Int!
+    }
+  `
+  createTypes(typeDefs)
+}*/
+
 exports.createResolvers = async (
   {
     actions,
-    cache,
     createNodeId,
+    createContentDigest,
     createResolvers,
     store,
     reporter,
@@ -59,17 +74,26 @@ exports.createResolvers = async (
   await createResolvers({
     WwdmGraph_Image: {
       imageFile: {
-        type: "File",
-        async resolve(source) {
-          let sourceUrl = 'http://localhost:5002/images/' + source.id;
-          return await createRemoteFileNode({
-            url: encodeURI(sourceUrl),
-            store,
-            cache,
-            createNode,
-            createNodeId,
-            reporter,
-          })
+        type: 'File',
+        async resolve(source, args, context, info) {
+          console.log('Source:', source);
+          let data = {
+            id: source.id,
+            absolutePath: path.resolve('../../data/private/shots/', source.absolutePath),
+            extension: 'jpg',
+            ext: '.jpg'
+          }
+          let node = {
+            ...data,
+            id: createNodeId('ImageFile-'+source.id),
+            internal: {
+              type: 'File',
+              contentDigest: createContentDigest(data)
+            }
+          };
+          console.log('Node:', node);
+          await createNode(node, {name:'gatsby-source-filesystem'});
+          return node;
         },
       },
     },

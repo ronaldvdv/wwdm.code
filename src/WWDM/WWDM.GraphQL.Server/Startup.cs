@@ -1,13 +1,11 @@
 using HotChocolate;
-using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Subscriptions;
-using HotChocolate.AspNetCore.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WWDM.GraphQL.Types;
+using WWDM.GraphQL.DataLoaders;
+using WWDM.GraphQL.Schema;
 
 namespace WWDM.GraphQL
 {
@@ -22,27 +20,19 @@ namespace WWDM.GraphQL
             }
 
             app.UseRouting();
-            app.UseWebSockets()
-                .UseGraphQL("/graphql")
-                .UsePlayground("/graphql", "/graphqlplayground")
-                .UseVoyager("/graphql", "/graphqlvoyager");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGraphQL();
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGraphQL(
-                sp => SchemaBuilder.New()
-                .AddServices(sp)
-                .AddQueryType<QueryType>()
-                .AddType<EpisodeType>()
-                .AddType<SeasonType>()
-                .AddType<ImageType>()
-                .Create()
-            );
-            services.AddGraphQLSubscriptions();
-            services.AddDataLoaderRegistry();
-            var cs = "Server=db;Database=wwdm2020;Uid=root;Pwd=root;";
-            services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs));
+            services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddDataLoader<SeasonByIdDataLoader>();
+            var cs = "Server=localhost;Database=wwdm2020;Uid=root;Pwd=root;";
+            services.AddPooledDbContextFactory<WWDMContext>(dbob => dbob.UseMySql(cs, ServerVersion.AutoDetect(cs)));
         }
     }
 }

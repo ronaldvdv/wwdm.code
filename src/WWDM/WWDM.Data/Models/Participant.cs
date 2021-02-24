@@ -31,6 +31,7 @@ namespace WWDM.Models
         public Gender Gender { get; set; } = Gender.Unspecified;
         public int Id { get; set; }
         public virtual Image Image { get; set; }
+        public int ImageId { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public string Infix { get; set; }
         public string LastName { get; set; }
@@ -39,6 +40,7 @@ namespace WWDM.Models
         public string PlaceOfBirth { get; set; }
         public virtual ICollection<Result> Results { get; set; }
         public Role Role { get; set; } = Role.Unknown;
+        public int SeasonId { get; set; }
         public virtual Season Season { get; set; }
         public string Slug => FirstName.Slugify();
         public string Summary { get; set; }

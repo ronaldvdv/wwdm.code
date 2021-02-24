@@ -52,7 +52,7 @@ namespace WWDM.Images
             services.Configure<ImageOptions>(sec);
 
             var cs = "Server=db;Database=wwdm2020;Uid=root;Pwd=root;";
-            services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs));
+            services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs, ServerVersion.AutoDetect(cs)));
         }
     }
 }

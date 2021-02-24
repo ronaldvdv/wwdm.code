@@ -5,6 +5,7 @@
         public virtual Episode Episode { get; set; }
         public int Id { get; set; }
         public string Notes { get; set; }
+        public int ParticipantId { get; set; }
         public virtual Participant Participant { get; set; }
         public ResultType Type { get; set; }
     }

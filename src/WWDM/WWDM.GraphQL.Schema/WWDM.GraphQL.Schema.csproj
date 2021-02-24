@@ -6,15 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate" Version="10.5.2" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="10.5.2" />
-    <PackageReference Include="HotChocolate.Types.Selections" Version="10.5.2" />
-    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.5.2" />
+    <PackageReference Include="HotChocolate" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Types.Selections" Version="10.5.5" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="11.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WWDM.Data\WWDM.Data.csproj" />
     <ProjectReference Include="..\WWDM.Infrastructure\WWDM.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Types\" />
   </ItemGroup>
 
 </Project>

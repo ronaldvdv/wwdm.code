@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWDM.GraphQL.Server", "WWDM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWDM.GraphQL.Schema", "WWDM.GraphQL.Schema\WWDM.GraphQL.Schema.csproj", "{DA32415F-4544-4A7E-A339-8AF1A83A0E22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WWDM.Images", "WWDM.Images\WWDM.Images.csproj", "{912CFEAE-3FDB-4FAA-8454-57A66F64BF98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWDM.Images", "WWDM.Images\WWDM.Images.csproj", "{912CFEAE-3FDB-4FAA-8454-57A66F64BF98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,9 +7,7 @@ using WWDM.Models.Configurations;
 namespace WWDM
 {
     public class WWDMContext : DbContext
-    {
-        public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
-
+    {        
         public WWDMContext(DbContextOptions options) : base(options)
         {
         }
@@ -29,11 +27,6 @@ namespace WWDM
         public DbSet<Team> Teams { get; set; }
         public DbSet<Website> Websites { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options
-            .UseLoggerFactory(loggerFactory)
-            .UseLazyLoadingProxies()
-            ;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

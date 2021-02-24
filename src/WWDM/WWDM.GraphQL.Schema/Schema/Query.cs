@@ -1,18 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using HotChocolate;
 using Microsoft.EntityFrameworkCore;
+using WWDM.GraphQL.DataLoaders;
 using WWDM.Models;
 
 namespace WWDM.GraphQL.Schema
 {
     public class Query
     {
-        public Task<Episode> Episode(int id, [Service] WWDMContext context) => context.Episodes.FirstOrDefaultAsync(e => e.Id == id);
+        [UseApplicationDbContext]
+        public Task<List<Season>> GetSeasons([ScopedService] WWDMContext context) => context.Seasons.ToListAsync();
 
-        public Task<Season[]> GetSeasons([Service] WWDMContext context) => context.Seasons.ToArrayAsync();
-
-        public string Hello() => "world";
-
-        public Task<Season> Season(int id, [Service] WWDMContext context) => context.Seasons.FirstOrDefaultAsync(s => s.Id == id);
+        public Task<Season> GetSeasonAsync(int id, SeasonByIdDataLoader dataLoader, CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
     }
 }

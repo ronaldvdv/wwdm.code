@@ -9,6 +9,9 @@ exports.createPages = async ({ graphql, actions }) => {
                 index, recordingCountries, id
                 episodes {
                     id, index, title
+                    games {
+                      id, title
+                    }
                 }
             }
         }
@@ -29,18 +32,21 @@ exports.createPages = async ({ graphql, actions }) => {
                 component: path.resolve('./src/templates/episode.index.js'),
                 context: { id: e.id }
             });
+
+            e.games.forEach(g => {
+              createPage({
+                path: '/seizoen-' + s.index + '/aflevering-' + e.index + '/opdrachten/' + g.id + '-test',
+                component: path.resolve('./src/templates/game.index.js'),
+                context: { id: g.id }
+              });
+            });
         });
     });
 
 }
 
 exports.onCreateNode = ({  node, actions, getNode }) => {
-  var type = node.internal.type;
-  if(type == "SitePage" || type == "File")
-  {
-    return;
-  }
-  console.log(`Node created of type "${node.internal.type}": ${node}`)
+  var type = node.internal.type;  
 }
 
 /* --------- gatsby-node.js --------- */
@@ -76,7 +82,6 @@ exports.createResolvers = async (
       imageFile: {
         type: 'File',
         async resolve(source, args, context, info) {
-          console.log('Source:', source);
           let data = {
             id: source.id,
             absolutePath: path.resolve('../../data/private/shots/', source.absolutePath),
@@ -91,11 +96,22 @@ exports.createResolvers = async (
               contentDigest: createContentDigest(data)
             }
           };
-          console.log('Node:', node);
           await createNode(node, {name:'gatsby-source-filesystem'});
           return node;
         },
       },
     },
   })
+}
+
+exports.onCreateWebpackConfig = ({ stage, actions }) => {
+  if (stage.startsWith("develop")) {
+    actions.setWebpackConfig({
+      resolve: {
+        alias: {
+          "react-dom": "@hot-loader/react-dom",
+        },
+      },
+    })
+  }
 }

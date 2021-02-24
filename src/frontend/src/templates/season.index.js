@@ -1,24 +1,53 @@
 import React from "react"
-import Img from "gatsby-image"
 import Layout from "../components/Layout";
 import { Link } from "gatsby";
+import Header from "../components/seasons/Header";
+import Panel from "../components/general/Panel";
 
-function EpisodeList({ seasonIndex, episodes })
-{
+function EpisodeList({ seasonIndex, episodes }) {
   return <ul>
     {episodes.map(e => <li><Link to={`/seizoen-${seasonIndex}/aflevering-${e.index}`}>Aflevering {e.index}</Link></li>)}
   </ul>;
 }
 
-export default function view({ data }) {
-    data = data.wwdm.season;
-    return<Layout 
-    menu={<h1>This is a header for season <span>{data.index}</span>: {data.recordingCountries}</h1>}
-    body={<div><Img fluid={data.image.imageFile.childImageSharp.fluid}/>Image: #{data.image.id} @ {data.image.absolutePath} <EpisodeList seasonIndex={data.index} episodes={data.episodes}/></div>
-    //body={<div>{JSON.stringify(data.image)}</div>
+function primaryEpisode(episode, season) {
 
-  }
-    />;
+}
+
+export default function view({ data }) {
+  data = data.wwdm.season;
+  return (<Layout
+    menu={<div>De kandidaten</div>}
+    body={
+      <div className="row">
+        <div className="col-12 col-lg-8">
+          <Header data={data} />
+          <div className="clearfix"></div>
+          <div className="row">
+            <div className="col-12 col-md-6">
+              <Panel color="primary" title="Afleveringen" figure={<figure>Image</figure>}>
+                Tekstje
+              </Panel>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <Panel color="primary" title="Kandidaten" figure={<figure>Image</figure>}>
+                Tekstje23
+              </Panel>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <EpisodeList seasonIndex={data.index} episodes={data.episodes} />
+            </div>
+
+            <div className="col-12 col-md-6">
+              Tekstje
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  />);
 }
 
 export const query = graphql`
@@ -36,7 +65,7 @@ export const query = graphql`
                 id
                 childImageSharp {
                   id
-                  fluid(maxWidth: 1200) {
+                  fluid(maxWidth: 800) {
                     ...GatsbyImageSharpFluid
                   }
                 }

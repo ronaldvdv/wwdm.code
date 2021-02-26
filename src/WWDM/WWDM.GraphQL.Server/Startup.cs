@@ -2,8 +2,10 @@ using HotChocolate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using WWDM.GraphQL.DataLoaders;
 using WWDM.GraphQL.Schema;
 
@@ -11,9 +13,20 @@ namespace WWDM.GraphQL
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { builder.AddDebug().AddConsole(); });
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var logger = loggerFactory.CreateLogger<Startup>();
+            logger.LogInformation($"Environment: {env.EnvironmentName}");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -30,9 +43,20 @@ namespace WWDM.GraphQL
         {
             services.AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddDataLoader<SeasonByIdDataLoader>();
-            var cs = "Server=localhost;Database=wwdm2020;Uid=root;Pwd=root;";
-            services.AddPooledDbContextFactory<WWDMContext>(dbob => dbob.UseMySql(cs, ServerVersion.AutoDetect(cs)));
+                .AddDataLoader<SeasonByIdDataLoader>()
+                .AddDataLoader<EpisodeByIdDataLoader>()
+                .AddDataLoader<ParticipantByIdDataLoader>()
+                .AddDataLoader<GameByIdDataLoader>()
+                .AddType<SeasonType>()
+                .AddType<EpisodeType>()
+                .AddType<GameType>()
+                .AddType<ImageType>();
+            var cs = Configuration.GetConnectionString("Database");
+            services.AddPooledDbContextFactory<WWDMContext>(dbob =>
+            {
+                dbob.UseMySql(cs, ServerVersion.AutoDetect(cs));
+                dbob.UseLoggerFactory(loggerFactory);
+            });
         }
     }
 }

@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using HotChocolate;
+using HotChocolate.DataLoader;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using WWDM.Models;
 
-namespace WWDM.GraphQL.Types
+namespace WWDM.GraphQL.Schema
 {
     public static class ResolverExtensions
     {
@@ -17,13 +19,17 @@ namespace WWDM.GraphQL.Types
             where TParent : IEntity
             where TChild : class, IEntity
         {
-            parent.Resolver((ctx, ct) =>
+            // TODO This approach says Service<WWDMContext> not registered, need to somehow use scoped
+            // https://github.com/ChilliCream/graphql-workshop/blob/master/docs/4-schema-design.md
+            // so we need to use ResolveWith<T>(call) where call has some [ScopedService] argument
+            // but this is tricky since that class needs to know the specific foreignKey expr
+            parent.Resolve((ctx, ct) =>
             {
                 var set = ctx.Service<WWDMContext>().Set<TChild>();
                 var parentId = ctx.Parent<TParent>().Id;
                 var key = typeof(TParent).Name + "-to-" + typeof(TChild).Name + "-" + keySuffix;
 
-                return ctx.GroupDataLoader<int, TChild>(key, async keys =>
+                FetchGroup<int, TChild> fetchGroup = async (keys, cancellationToken) =>
                 {
                     var parameter = foreignKey.Parameters.Single();
                     var subject = foreignKey.Body;
@@ -31,10 +37,13 @@ namespace WWDM.GraphQL.Types
                     var result = await set.Where(predicate).ToArrayAsync();
                     var lookup = result.ToLookup(foreignKey.Compile());
                     return lookup;
-                }).LoadAsync(parentId, ct);
-            });
+                };
+
+                return ctx.GroupDataLoader(fetchGroup, key).LoadAsync(parentId, ct);
+            }).UseDbContext<WWDMContext>();
         }
 
+/*
         public static void ResolveOneToOne<TParent, TChild>(this IObjectFieldDescriptor parent, Func<TParent, int> foreignKey, string keySuffix = "")
             where TParent : IEntity
             where TChild : class, IEntity
@@ -55,6 +64,6 @@ namespace WWDM.GraphQL.Types
                     return result;
                 }).LoadAsync(childId, ct);
             });
-        }
+        }*/
     }
 }

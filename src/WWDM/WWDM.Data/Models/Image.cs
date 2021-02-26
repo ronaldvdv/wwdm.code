@@ -5,8 +5,8 @@ namespace WWDM.Models
 {
     public class Image : IEntity
     {
-        public string AbsolutePath => Path.Combine(Episode.ImageFolder, Filename);
         public virtual Episode Episode { get; set; }
+        public int EpisodeId { get; set; }
         public string Filename { get; set; }
         public virtual Game Game { get; set; }
 
@@ -19,5 +19,6 @@ namespace WWDM.Models
         public TimeSpan Timestamp { get; set; }
 
         public int Width { get; set; }
+        
     }
 }

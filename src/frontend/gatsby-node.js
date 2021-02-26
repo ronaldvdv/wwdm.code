@@ -26,7 +26,7 @@ exports.createPages = async ({ graphql, actions }) => {
             context: { id: s.id },
         });
 
-        s.episodes.forEach(e => {
+        /*s.episodes.forEach(e => {
             createPage({
                 path: '/seizoen-' + s.index + '/aflevering-' + e.index,
                 component: path.resolve('./src/templates/episode.index.js'),
@@ -40,7 +40,7 @@ exports.createPages = async ({ graphql, actions }) => {
                 context: { id: g.id }
               });
             });
-        });
+        });*/
     });
 
 }

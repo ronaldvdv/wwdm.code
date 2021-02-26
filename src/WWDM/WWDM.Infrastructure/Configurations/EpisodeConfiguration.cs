@@ -9,12 +9,12 @@ namespace WWDM.Models.Configurations
         {
             builder.HasMany(typeof(Image), nameof(Episode.Images)).WithOne(nameof(Image.Episode)).IsRequired();
             builder.HasMany(typeof(Game), nameof(Episode.Games)).WithOne(nameof(Game.Episode)).IsRequired();
-            builder.HasOne(typeof(Image), nameof(Episode.Image));
+            builder.HasOne(typeof(Image), nameof(Episode.Image)).WithOne().HasForeignKey(typeof(Episode), nameof(Episode.ImageId));
             builder.HasMany(typeof(Result), nameof(Episode.Results)).WithOne(nameof(Result.Episode)).IsRequired();
             builder.HasMany(typeof(Mutation), nameof(Episode.Mutations)).WithOne(nameof(Mutation.Episode)).IsRequired();
             builder.HasMany(typeof(Suspicion), nameof(Episode.Suspicions)).WithOne(nameof(Suspicion.Episode)).IsRequired();
             builder.Ignore(e => e.ActiveParticipants);
-            builder.Ignore(e => e.Participants);
+            builder.Ignore(e => e.Participants);            
         }
     }
 }

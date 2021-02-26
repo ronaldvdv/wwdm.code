@@ -41,8 +41,7 @@ namespace WWDM.Models
 
         public virtual Image Image { get; set; }
 
-        public string ImageFolder => "nl_s" + Season.Index.ToString("D2") + "e" + Index.ToString("D2");
-
+        
         public int ImageId { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public int Index { get; set; }

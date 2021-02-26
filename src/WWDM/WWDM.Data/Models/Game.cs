@@ -24,6 +24,8 @@ namespace WWDM.Models
         public TimeSpan? TimeEnd { get; set; }
         public TimeSpan? TimeStart { get; set; }
         public string Title { get; set; }
+        public int EpisodeId { get; set; }
+        public int ImageId { get; set; }
 
         internal void UpdateTags(Tag[] tags)
         {

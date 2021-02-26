@@ -21,4 +21,4 @@ RUN dotnet publish "WWDM.GraphQL.Server.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WWDM.GraphQL.Server.dll"]
+ENTRYPOINT ["dotnet", "WWDM.GraphQL.Server.dll", "--environment=Production"] 

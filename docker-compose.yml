@@ -22,13 +22,13 @@ services:
       - '3306:3306'
     expose:
       - 3306
-  images:
-    build:
-      context: ./src/WWDM
-      dockerfile: WWDM.Images/Dockerfile      
-    ports:
-      - 5002:80
-    depends_on:
-      - db
-    volumes:
-      - ./data/private/shots:/var/shots:ro
+#  images:
+#    build:
+#      context: ./src/WWDM
+#      dockerfile: WWDM.Images/Dockerfile      
+#    ports:
+#      - 5002:80
+#    depends_on:
+#      - db
+#    volumes:
+#      - ./data/private/shots:/var/shots:ro

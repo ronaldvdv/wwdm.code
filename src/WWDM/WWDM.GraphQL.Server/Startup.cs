@@ -5,6 +5,7 @@ using HotChocolate.AspNetCore.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WWDM.GraphQL.Types;
@@ -13,6 +14,13 @@ namespace WWDM.GraphQL
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -41,7 +49,7 @@ namespace WWDM.GraphQL
             );
             services.AddGraphQLSubscriptions();
             services.AddDataLoaderRegistry();
-            var cs = "Server=db;Database=wwdm2020;Uid=root;Pwd=root;";
+            var cs = Configuration.GetConnectionString("Database");
             services.AddDbContext<WWDMContext>(dbob => dbob.UseMySql(cs));
         }
     }

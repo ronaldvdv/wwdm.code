@@ -2,13 +2,8 @@ import React from "react"
 import Layout from "../components/Layout";
 import { Link } from "gatsby";
 import Header from "../components/seasons/Header";
+import Menu from "../components/seasons/Menu";
 import Panel from "../components/general/Panel";
-
-function EpisodeList({ seasonIndex, episodes }) {
-  return <ul>
-    {episodes.map(e => <li><Link to={`/seizoen-${seasonIndex}/aflevering-${e.index}`}>Aflevering {e.index}</Link></li>)}
-  </ul>;
-}
 
 function primaryEpisode(episode, season) {
 
@@ -17,34 +12,21 @@ function primaryEpisode(episode, season) {
 export default function view({ data }) {
   data = data.wwdm.season;
   return (<Layout
-    menu={<div>De kandidaten</div>}
-    body={
-      <div className="row">
-        <div className="col-12 col-lg-8">
-          <Header data={data} />
-          <div className="clearfix"></div>
-          <div className="row">
-            <div className="col-12 col-md-6">
-              <Panel color="primary" title="Afleveringen" figure={<figure>Image</figure>}>
-                Tekstje
-              </Panel>
-            </div>
+    menu={<Menu data={data}/>}
+    header={<Header data={data}/>}
+    body={      
+      <div>
+        <Panel color="primary" title="Afleveringen" figure={<figure>Image</figure>}>
+          Tekstje
+        </Panel>
 
-            <div className="col-12 col-md-6">
-              <Panel color="primary" title="Kandidaten" figure={<figure>Image</figure>}>
-                Tekstje23
-              </Panel>
-            </div>
+        <Panel color="primary" title="Kandidaten" figure={<figure>Image</figure>}>
+          Tekstje23
+        </Panel>
 
-            <div className="col-12 col-md-6">
-              <EpisodeList seasonIndex={data.index} episodes={data.episodes} />
-            </div>
-
-            <div className="col-12 col-md-6">
-              Tekstje
-            </div>
-          </div>
-        </div>
+        <div className="col-12 col-md-6">
+          Tekstje
+        </div>            
       </div>
     }
   />);
@@ -56,7 +38,7 @@ export const query = graphql`
         season(id: $id) {
             index, recordingCountries
             episodes {
-              index
+              index, title, code
             }
             image {
               id, absolutePath, extension

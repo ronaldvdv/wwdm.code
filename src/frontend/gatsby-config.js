@@ -1,3 +1,7 @@
+const fs = require('fs');
+const gracefulFs = require('graceful-fs');
+gracefulFs.gracefulify(fs);
+
 const path = require(`path`);
 /**
  * Configure your Gatsby site with this file.
@@ -10,10 +14,10 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `images`,
+        name: `static`,
         path: `${__dirname}/static`,
       },
-    },
+    },    
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     {
@@ -31,11 +35,7 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-graphql-image',
-      options: {
-        schemaName: "WwdmGraph",
-        imageFieldName: "imagePath"
-      }
-    },
+      resolve: 'gatsby-plugin-wwdm-image'
+    },    
   ],
 }

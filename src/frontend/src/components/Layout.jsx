@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function view({menu, body})
+export default function view({header, menu, body, sidebar})
 {
     return <div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -41,11 +41,17 @@ export default function view({menu, body})
             </div>            
         </div>
         </nav>
-        <div className="container">
-            <header>{menu}</header>
-            <div>
+        <div className="container-xxl" id="mainContainer">
+            <header>{header}</header>
+            <nav>
+                {menu}
+            </nav>
+            <main>
                 {body}
-            </div>
+            </main>
+            <sidebar>
+                {sidebar}
+            </sidebar>
         </div>
     </div>;
 }

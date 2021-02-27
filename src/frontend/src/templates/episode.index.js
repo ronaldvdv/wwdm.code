@@ -11,12 +11,12 @@ function GameList({ seasonIndex, episodeIndex, games }) {
 
 export default function page({ data }) {
     data = data.wwdm.episode;
-
+    console.log(data);
     return<Layout 
     menu={<h1>This is a header for episode <span>{data.index}</span>: {data.title} ({data.season.recordingCountries})</h1>}
     body={
     <div>
-      <Img fluid={data.image.imageFile.childImageSharp.fluid}/>
+      { data.image.imageFile.childImageSharp != null && <Img fluid={data.image.imageFile.childImageSharp.fluid}/> }
       <Link to={`/seizoen-${data.season.index}`}>Naar seizoen {data.season.index}</Link>
       <GameList seasonIndex={data.season.index} episodeIndex={data.index} games={data.games}/>
     </div>
